@@ -20,13 +20,6 @@
               "quickstart",
               "development"
             ]
-          },
-          {
-            "group": "",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
           }
         ]
       }
