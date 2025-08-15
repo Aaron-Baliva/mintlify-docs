@@ -1,0 +1,147 @@
+---
+title: "Distributions supportées"
+description: "Choisir la bonne image système chez HetixCloud (Debian, Ubuntu, AlmaLinux, Rocky, Pterodactyl, WireGuard Easy)."
+---
+
+## Vue d'ensemble
+
+Voici les images système et stacks pré‑installées disponibles chez HetixCloud.
+
+| Distribution / Stack     | Versions / Base                                 | Idéal pour                                    |
+| ------------------------ | ----------------------------------------------- | --------------------------------------------- |
+| **Debian**               | 11, 12, 13                                      | Stabilité, serveurs critiques, minimalisme    |
+| **Ubuntu (LTS)**         | 20.04, 22.04, 24.04                             | Simplicité, écosystème cloud, docs abondantes |
+| **AlmaLinux**            | 9 (compatible RHEL)                             | Environnements entreprise, remplaçant CentOS  |
+| **Rocky Linux**          | 9 (compatible RHEL)                             | Alternative RHEL communautaire                |
+| **Pterodactyl 1.11**     | **Debian 12** \+ panel Pterodactyl pré‑installé | Hébergement de serveurs de jeu rapidement     |
+| **WireGuard Easy (WGE)** | **Debian 12** \+ WireGuard Easy pré‑installé    | Mettre en place un VPN simple et sécurisé     |
+
+<Tip>
+  Si vous hésitez : **Debian 12** pour une base robuste, **Ubuntu 22.04/24.04** si vous voulez un environnement "prêt à l’emploi" avec beaucoup de tutos.
+</Tip>
+
+## Quelle distribution choisir ?
+
+<AccordionGroup>
+  <Accordion title="Debian (11, 12, 13)" icon="server">
+    **À choisir si…**
+
+    - Vous privilégiez la stabilité, la sobriété et des mises à jour prévisibles.
+    - Vous avez besoin d'une base fiable pour services web, bases de données, reverse proxies, etc.
+
+    **Points forts**
+
+    - Dépendances stables, politique de gel des versions.
+    - Image minimale facile à durcir (hardening).
+
+    **Notes d'usage**
+
+    - 11/12/13 conviennent à la majorité des workloads. Pour du neuf, partez sur **Debian 12** (équilibre stabilité/versions de paquets).
+  </Accordion>
+  <Accordion title="Ubuntu LTS (20.04, 22.04, 24.04)" icon="square-code">
+    **À choisir si…**
+
+    - Vous voulez une expérience familière avec une très large documentation et des PPA.
+    - Vous déployez des stacks cloud/dev (Docker, Kubernetes, CI/CD).
+
+    **Points forts**
+
+    - Long Term Support (LTS), écosystème riche, packages récents.
+    - Nombreux guides/tutoriels pour devops et frameworks web.
+
+    **Notes d'usage**
+
+    - **22.04** est un excellent compromis; **24.04** apporte des versions plus récentes.
+  </Accordion>
+  <Accordion title="AlmaLinux 9 (compatible RHEL)" icon="shield-check">
+    **À choisir si…**
+
+    - Vous migrez depuis CentOS et souhaitez une base **RHEL‑compatible** soutenue par une fondation.
+    - Vous ciblez des outils métier certifiés RHEL.
+
+    **Points forts**
+
+    - Cycle entreprise, ABI/ABI compatibles RHEL.
+    - Idéal pour environnements standardisés et conservateurs.
+
+    **Notes d'usage**
+
+    - Paquets plus conservateurs que Debian/Ubuntu. Parfait pour apps critiques nécessitant stabilité stricte.
+  </Accordion>
+  <Accordion title="Rocky Linux 9 (compatible RHEL)" icon="shield-check">
+    **À choisir si…**
+
+    - Vous préférez une alternative RHEL portée par la communauté (héritage CentOS).
+    - Vous avez des playbooks/recettes RHEL déjà prêts.
+
+    **Points forts**
+
+    - Parité fonctionnelle avec RHEL.
+    - Gouvernance communautaire, excellent pour clusters homogènes.
+
+    **Notes d'usage**
+
+    - Choix souvent personnel vs AlmaLinux : **les deux sont RHEL‑compatibles**.
+  </Accordion>
+  <Accordion title="Pterodactyl 1.11 (Debian 12 + panel pré‑installé)" icon="gamepad">
+    **À choisir si…**
+
+    - Vous voulez lancer des **serveurs de jeu** rapidement (Minecraft, etc.) avec un **panel moderne**.
+
+    **Ce que vous obtenez**
+
+    - Debian 12 configurée \+ **Pterodactyl 1.11** pré‑installé.
+    - Gain de temps sur l’installation, accès direct au panel.
+
+    **Notes d'usage**
+
+    - Recommandé si votre besoin principal est le **gaming** (et non un serveur généraliste).
+  </Accordion>
+  <Accordion title="WireGuard Easy (Debian 12 + WGE pré‑installé)" icon="lock">
+    **À choisir si…**
+
+    - Vous avez besoin d’un **VPN** simple pour connecter serveurs/clients rapidement.
+
+    **Ce que vous obtenez**
+
+    - Debian 12 \+ **WireGuard Easy**, interface web pour gérer les pairs.
+    - Déploiement en quelques minutes, configuration QR‑code pour mobile.
+
+    **Notes d'usage**
+
+    - Pour besoins VPN avancés (MFA, portail captif, SSO), envisagez des solutions plus complètes.
+  </Accordion>
+</AccordionGroup>
+
+## Choix rapides
+
+<CardGroup cols={2}>
+  <Card title="Serveur web / app" icon="server" href="#debian-11-12-13">
+    **Recommandé :** Debian 12\
+    Nginx/Apache, PostgreSQL/MySQL, reverse proxy, workers, etc.
+  </Card>
+  <Card title="Docker / DevOps" icon="square-code" href="#ubuntu-lts-2004-2204-2404">
+    **Recommandé :** Ubuntu 22.04 ou 24.04\
+    Écosystème moderne, CI/CD, conteneurs, k8s.
+  </Card>
+  <Card title="Entreprise (RHEL‑like)" icon="shield-check" href="#almalinux-9-compatible-rhel">
+    **Recommandé :** AlmaLinux 9\
+    Standards IT, conformité, cycles maîtrisés.
+  </Card>
+  <Card title="Communautaire RHEL‑like" icon="shield-check" href="#rocky-linux-9-compatible-rhel">
+    **Recommandé :** Rocky Linux 9\
+    Parité RHEL, gouvernance communautaire.
+  </Card>
+  <Card title="Jeux (prêt à l’emploi)" icon="gamepad" href="#pterodactyl-111-debian-12--panel-pre-installe">
+    **Recommandé :** Pterodactyl 1.11\
+    Panel moderne, déploiement rapide.
+  </Card>
+  <Card title="VPN en 5 minutes" icon="lock" href="#wireguard-easy-debian-12--wge-pre-installe">
+    **Recommandé :** WireGuard Easy\
+    Interface simple, QR‑codes, clients mobiles.
+  </Card>
+</CardGroup>
+
+<Note>
+  Besoin d’aide pour choisir ? Ouvrez un ticket **HetixCloud** avec votre stack (langage, base de données, trafic estimé). Nous vous orienterons vers l’image la plus adaptée.
+</Note>
