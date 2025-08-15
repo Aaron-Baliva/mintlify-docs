@@ -1,24 +1,48 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
-  "name": "HetixCloud",
+  "theme": "mint",
+  "name": "Mint Starter Kit",
   "colors": {
-    "primary": "#f97316",
-    "light": "#fb923c",
-    "dark": "#ea580c"
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
   },
-  "favicon": "/favicon.ico",
+  "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
         "tab": "Guides",
         "groups": [
           {
-            "group": "VPS",
+            "group": "Getting started",
             "pages": [
               "index",
               "quickstart",
               "development"
+            ]
+          },
+          {
+            "group": "Customization",
+            "pages": [
+              "essentials/settings",
+              "essentials/navigation"
+            ]
+          },
+          {
+            "group": "Writing content",
+            "pages": [
+              "essentials/markdown",
+              "essentials/code",
+              "essentials/images",
+              "essentials/reusable-snippets"
+            ]
+          },
+          {
+            "group": "AI tools",
+            "pages": [
+              "ai-tools/cursor",
+              "ai-tools/claude-code",
+              "ai-tools/windsurf"
             ]
           }
         ]
@@ -27,19 +51,19 @@
     "global": {
       "anchors": [
         {
-          "anchor": "HetixCloud",
-          "href": "https://hetix.eu/",
-          "icon": "globe"
+          "anchor": "Documentation",
+          "href": "https://mintlify.com/docs",
+          "icon": "book-open-cover"
         },
         {
-          "anchor": "Espace Client",
-          "href": "https://hetix.eu/dashboard",
-          "icon": "layer-group"
+          "anchor": "Community",
+          "href": "https://mintlify.com/community",
+          "icon": "slack"
         },
         {
-          "anchor": "Discord",
-          "href": "https://discord.gg/nWzVWybt4u",
-          "icon": "discord"
+          "anchor": "Blog",
+          "href": "https://mintlify.com/blog",
+          "icon": "newspaper"
         }
       ]
     }
@@ -51,8 +75,8 @@
   "navbar": {
     "links": [
       {
-        "label": "Ticket Support",
-        "href": "https://hetix.eu/tickets"
+        "label": "Support",
+        "href": "mailto:hi@mintlify.com"
       }
     ],
     "primary": {
