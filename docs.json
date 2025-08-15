@@ -14,7 +14,7 @@
         "tab": "Guides",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "VPS",
             "pages": [
               "index",
               "quickstart",
@@ -22,27 +22,10 @@
             ]
           },
           {
-            "group": "Customization",
+            "group": "",
             "pages": [
               "essentials/settings",
               "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
             ]
           }
         ]
@@ -71,19 +54,19 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "HetixCloud",
+          "href": "https://hetix.eu/",
+          "icon": "globe"
         },
         {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
+          "anchor": "Espace Client",
+          "href": "https://hetix.eu/dashboard",
+          "icon": "layer-group"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Discord",
+          "href": "https://discord.gg/nWzVWybt4u",
+          "icon": "discord"
         }
       ]
     }
@@ -95,8 +78,8 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Ticket Support",
+        "href": "https://hetix.eu/tickets"
       }
     ],
     "primary": {
