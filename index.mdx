@@ -1,19 +1,53 @@
 ---
-title: "Bienvenue"
-description: "Découvrez et maîtrisez les services HetixCloud en quelques minutes"
+title: "Introduction"
+description: "Le but de cette documentation HetixCloud et comment l’utiliser efficacement"
 ---
 
-## Commencer rapidement
+## À propos
 
-Mettez votre serveur ou service HetixCloud en ligne en un temps record.
+Cette documentation a pour objectif de vous aider à **choisir et utiliser efficacement** les images système proposées par HetixCloud (distributions Linux et stacks pré-installées).  
+Vous y trouverez des **principes clairs**, des **bonnes pratiques** et des **procédures génériques** pour déployer et maintenir vos services.
 
-<Card title="Guide de démarrage" icon="rocket" horizontal href="/quickstart">
-  Suivez notre guide rapide en trois étapes pour créer, configurer et sécuriser votre service.
-</Card>
+<Note>
+Cette page présente l’intention et l’organisation globale de la doc. Les sections détaillées seront ajoutées progressivement.
+</Note>
 
+## Ce que vous allez y trouver
 
-## Besoin d'aide ?
+- **Distributions supportées** : panorama des images proposées et critères de choix.
+- **Bonnes pratiques** : sécurité de base, mises à jour, sauvegardes, monitoring (contenus génériques).
+- **Procédures génériques** : premiers pas après l’installation (création d’utilisateur, SSH, pare-feu).
+- **Recettes orientées usage** *(à venir)* : web, bases de données, conteneurs, VPN, etc.
+- **Guides dédiés** *(à venir)* : Pterodactyl pré-installé, WireGuard Easy, cas d’usage concrets.
 
-<Card title="Support HetixCloud" icon="headset" href="/support">
-  Contactez notre équipe ou consultez notre documentation pour obtenir une assistance rapide.
-</Card>
+## Comment utiliser cette documentation
+
+1. **Identifier votre objectif** : héberger un site, un serveur de jeu, un VPN, un service applicatif…
+2. **Choisir l’image système** en fonction de la stabilité souhaitée, de l’écosystème et des exigences (versions de paquets, compatibilité, cycle de support).
+3. **Appliquer les bases** : utilisateur non-root avec `sudo`, clés SSH, pare-feu, mises à jour automatiques raisonnables.
+4. **Suivre les procédures** et adapter les exemples à votre contexte (nom de domaine, IP, ports).
+
+<Tip>
+Utilisez la recherche intégrée de la documentation pour retrouver rapidement une commande, une option ou une étape.
+</Tip>
+
+## Conventions utilisées
+
+- `<HOSTNAME>` : nom d’hôte de votre serveur  
+- `<IP_PUBLIC>` : adresse IPv4/IPv6 publique  
+- `<USER>` : utilisateur administrateur (non-root)  
+- `<PORT>` : numéro de port à personnaliser
+
+Les blocs de commandes sont à exécuter sur votre serveur, en SSH, avec un utilisateur disposant de droits `sudo`.
+
+## Prérequis généraux
+
+- Accès **SSH** fonctionnel (idéalement par **clé** plutôt que mot de passe).  
+- Un utilisateur **non-root** avec droits `sudo`.  
+- **Pare-feu** activé et règles minimales (SSH, services nécessaires).  
+- **Mises à jour** : appliquer régulièrement les correctifs de sécurité.
+
+## Support et retours
+
+Si un point n’est pas encore documenté ou si vous repérez une amélioration possible, n’hésitez pas à **faire remonter vos besoins**.  
+Cette documentation est **vivante** : elle évoluera avec vos retours et les nouveautés HetixCloud.
