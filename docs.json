@@ -1,87 +1,81 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
-  "name": "HetixCloud",
-  "colors": {
-    "primary": "#f97316",
-    "light": "#fb923c",
-    "dark": "#ea580c"
-  },
-  "favicon": "/favicon.ico",
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Bienvenue",
-            "pages": [
-              "index"
+    "$schema": "https://mintlify.com/docs.json",
+    "theme": "maple",
+    "name": "HetixCloud",
+    "colors": {
+        "primary": "#f97316",
+        "light": "#fb923c",
+        "dark": "#ea580c"
+    },
+    "favicon": "/favicon.ico",
+    "navigation": {
+        "tabs": [
+            {
+                "tab": "Guides",
+                "groups": [
+                    {
+                        "group": "Bienvenue",
+                        "pages": [
+                            "index"
+                        ]
+                    },
+                    {
+                        "group": "VPS",
+                        "pages": [
+                            "vps/distribution"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "global": {
+            "anchors": [
+                {
+                    "anchor": "HetixCloud",
+                    "href": "https://hetix.eu",
+                    "icon": "globe"
+                },
+                {
+                    "anchor": "Espace Client",
+                    "href": "https://hetix.eu/dashboard",
+                    "icon": "layer-group"
+                },
+                {
+                    "anchor": "Communauté",
+                    "href": "https://discord.gg/nWzVWybt4u",
+                    "icon": "discord"
+                }
             ]
-          },
-          {
-            "group": "VPS",
-            "pages": [
-              "vps/distribution"
-            ]
-          }
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
         }
-      ]
+    },
+    "logo": {
+        "light": "/logo/light.svg",
+        "dark": "/logo/dark.svg"
+    },
+    "navbar": {
+        "primary": {
+            "type": "button",
+            "label": "Etat des services",
+            "href": "https://online.hetix.eu"
+        }
+    },
+    "contextual": {
+        "options": [
+            "copy",
+            "view",
+            "chatgpt",
+            "claude",
+            "perplexity",
+            "mcp",
+            "cursor",
+            "vscode"
+        ]
+    },
+    "footer": {
+        "socials": {
+            "x": "https://x.com/mintlify",
+            "github": "https://github.com/mintlify",
+            "linkedin": "https://linkedin.com/company/mintlify"
+        }
     }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
-  }
 }
