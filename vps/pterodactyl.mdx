@@ -1,0 +1,44 @@
+---
+title: "Installer Pterodactyl sur votre VPS"
+description: "Guide complet pour installer Pterodactyl de deux manières : via un script automatisé ou en suivant la documentation officielle."
+---
+
+## Présentation
+
+[Pterodactyl](https://pterodactyl.io) est un **panel de gestion de serveurs de jeux** open-source.  
+Il permet d’héberger et de gérer facilement vos serveurs Minecraft, Rust, ARK et bien d’autres, grâce à une interface web moderne et un système de conteneurs sécurisé.
+
+Dans ce guide, vous trouverez **deux méthodes d’installation** :
+
+1. **Méthode simple** : utilisation du script non-officiel *(installation rapide et automatisée)*  
+2. **Méthode avancée** : suivre la [documentation officielle](https://pterodactyl.io/panel/1.0/getting_started.html) *(installation manuelle, plus flexible)*
+
+<Note>
+Nous recommandons la **méthode simple** pour une première installation ou des tests rapides, et la **méthode avancée** pour un usage en production.
+</Note>
+
+---
+
+## Prérequis
+
+- Un VPS sous **Ubuntu 20.04+, Debian 10+, Rocky/AlmaLinux 8+**  
+  (voir tableau de compatibilité dans la doc HetixCloud)  
+- Accès SSH avec un utilisateur disposant des droits `sudo`  
+- Un nom de domaine (optionnel mais recommandé)  
+- Une machine avec au moins **2 Go RAM / 1 vCPU**
+
+---
+
+## Méthode 1 : Script non-officiel (rapide et simple)
+
+Cette méthode permet d’installer Pterodactyl **en quelques commandes**.
+
+```bash
+# Télécharger le script
+curl -s https://pterodactyl-installer.se -o installer.sh
+
+# Rendre le script exécutable
+chmod +x installer.sh
+
+# Lancer le script en root
+sudo bash installer.sh

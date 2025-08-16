@@ -22,7 +22,8 @@
                     {
                         "group": "VPS",
                         "pages": [
-                            "vps/distribution"
+                            "vps/distribution",
+                            "vps/pterodactyl"
                         ]
                     }
                 ]
