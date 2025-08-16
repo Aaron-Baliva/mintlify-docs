@@ -1,49 +1,49 @@
 ---
 title: "Configurer une clé SSH"
-description: "Apprenez à générer et utiliser une clé SSH pour sécuriser vos connexions sur HetixCloud."
+description: "Guide pour générer et utiliser une clé SSH sur HetixCloud afin de sécuriser vos connexions."
 ---
 
-## 🔐 Pourquoi utiliser une clé SSH ?
+## Pourquoi utiliser une clé SSH ?
 
-L’authentification par clé SSH est la manière la plus sécurisée de se connecter à un serveur, car elle remplace le mot de passe par une paire de clés cryptographiques.  
-Chez **HetixCloud**, nous recommandons fortement cette méthode afin d’améliorer la sécurité et de simplifier l’accès à vos VPS.  
-Vous pourrez désactiver ou régénérer vos clés à tout moment depuis votre machine.
-
----
-
-## ✅ Prérequis
-
-- Un ordinateur sous **Windows, macOS ou Linux**  
-- Aucun logiciel supplémentaire requis pour la méthode en ligne de commande  
-- **Optionnel :** [Termius](https://termius.com/download), un outil graphique qui facilite la gestion des clés pour les débutants  
+L’authentification par clé SSH est une alternative plus sûre que le mot de passe classique.  
+Elle repose sur une paire de clés (publique et privée) qui permet de vérifier votre identité de manière fiable.  
+Chez **HetixCloud**, nous recommandons fortement cette méthode pour protéger vos accès tout en facilitant vos connexions aux serveurs.
 
 ---
 
-## 🖥️ Méthode 1 : Générer une clé SSH en ligne de commande
+## Conditions préalables
 
-Cette méthode fonctionne sur **Linux, macOS** (Terminal) et **Windows** (PowerShell).
+- Ordinateur sous **Windows, macOS ou Linux**  
+- Aucun outil supplémentaire nécessaire pour la méthode en ligne de commande  
+- Optionnel : [Termius](https://termius.com/download), un logiciel qui simplifie la gestion des clés SSH
 
-1. Ouvrez votre **Terminal** (ou PowerShell sur Windows)  
-2. Exécutez la commande suivante :
+---
+
+## Méthode 1 : Génération d’une clé SSH en ligne de commande
+
+Cette méthode est universelle et fonctionne aussi bien sur Windows (PowerShell) que sur macOS et Linux (Terminal).
+
+1. Ouvrez une fenêtre **Terminal** (ou **PowerShell** si vous êtes sous Windows).  
+2. Saisissez la commande suivante :
 
 ```bash
 ssh-keygen -t ed25519 -C "votre.email@example.com"
 ```
 
-👉 L’algorithme **ed25519** est recommandé pour ses performances et son niveau de sécurité.  
+L’algorithme **ed25519** est recommandé, car il offre un excellent compromis entre sécurité et rapidité.  
 
-3. Appuyez sur **Entrée** pour valider l’emplacement par défaut :  
-   - Linux/macOS : `/home/votre_utilisateur/.ssh/id_ed25519`  
+3. Appuyez sur **Entrée** pour accepter l’emplacement par défaut :  
+   - Linux/macOS : `~/.ssh/id_ed25519`  
    - Windows : `C:\Users\VotreNom\.ssh\id_ed25519`  
 
-4. Entrez une **phrase de passe** pour protéger la clé (facultatif mais conseillé).  
+4. Définissez une **phrase secrète** si vous souhaitez ajouter une protection supplémentaire (facultatif mais conseillé).  
 
-### Résultat
+### Résultat obtenu
 
-- **Clé privée** → `id_ed25519` *(à conserver en sécurité, ne jamais la partager)*  
-- **Clé publique** → `id_ed25519.pub` *(à transmettre à HetixCloud ou à ajouter sur votre VPS)*  
+- **Clé privée** : `id_ed25519` → à conserver strictement confidentielle  
+- **Clé publique** : `id_ed25519.pub` → à copier et à ajouter sur votre VPS HetixCloud  
 
-Pour afficher la clé publique (à copier dans le panneau ou le VPS) :
+Pour afficher la clé publique et la copier dans votre panneau ou sur le serveur, utilisez :
 
 ```bash
 cat ~/.ssh/id_ed25519.pub
@@ -51,27 +51,26 @@ cat ~/.ssh/id_ed25519.pub
 
 ---
 
-## 🛠️ Méthode 2 : Générer une clé SSH avec Termius (interface graphique)
+## Méthode 2 : Génération d’une clé SSH avec Termius
 
-Si vous préférez une interface graphique, **Termius** est une solution simple et gratuite pour créer et gérer vos clés SSH.
+Pour ceux qui préfèrent une interface graphique, Termius permet de générer et gérer facilement des clés SSH.
 
-1. Téléchargez Termius : [https://termius.com/download](https://termius.com/download)  
-2. Installez et ouvrez l’application  
-3. Rendez-vous dans l’onglet **Keychain**  
-4. Cliquez sur **Generate Key**  
-5. Donnez un nom à votre clé et ajoutez une phrase de passe (optionnel mais recommandé)  
-6. Cliquez sur **Generate & Save**  
+1. Téléchargez et installez Termius : [https://termius.com/download](https://termius.com/download)  
+2. Lancez l’application et ouvrez l’onglet **Keychain**  
+3. Cliquez sur **Generate Key**  
+4. Attribuez un nom à votre clé et définissez une phrase secrète si vous le souhaitez  
+5. Sélectionnez **Generate & Save** pour créer et enregistrer la clé
 
 ---
 
-## 📂 Où sont stockées les clés ?
+## Localisation des clés
 
-- **Clé privée** → enregistrée localement dans Termius ou dans le répertoire `~/.ssh/` de votre machine  
-- **Clé publique** → peut être copiée facilement depuis Termius ou affichée avec `cat` sur votre système, pour être ajoutée à votre VPS HetixCloud  
+- **Clé privée** : conservée localement (dans Termius ou dans le répertoire `~/.ssh/` de votre machine)  
+- **Clé publique** : affichable avec `cat` ou exportable depuis Termius afin d’être ajoutée à votre VPS HetixCloud  
 
 ---
 
 <Tip>
-Pour plus de sécurité, utilisez une **passphrase forte** et sauvegardez vos clés privées dans un endroit sûr.  
-Si vous perdez la clé privée, vous ne pourrez plus accéder au serveur associé.
+Utilisez une phrase secrète robuste pour protéger vos clés privées.  
+En cas de perte de votre clé privée, l’accès au serveur correspondant sera définitivement bloqué.
 </Tip>
