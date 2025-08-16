@@ -1,0 +1,114 @@
+---
+title: "Protéger son serveur contre les intrusions"
+description: "Mettre en place un système de protection automatique des services (SSH, web, etc.) avec Fail2ban ou CrowdSec."
+---
+
+## Introduction
+
+Protéger un serveur exposé sur Internet est indispensable.  
+Des attaques par force brute (notamment sur **SSH**) surviennent en permanence.  
+Deux solutions couramment utilisées sont :
+
+- **Fail2ban** : historique, simple, bloque les adresses IP après plusieurs échecs de connexion.  
+- **CrowdSec** : alternative moderne, collaborative et mieux adaptée aux environnements actuels.
+
+---
+
+## Méthode 1 : Installer Fail2ban
+
+Fail2ban reste une solution légère et facile à mettre en place, notamment pour un usage basique.
+
+### Installation
+
+```bash
+# Debian / Ubuntu
+sudo apt update && sudo apt install fail2ban -y
+
+# Rocky / AlmaLinux
+sudo dnf install fail2ban -y
+```
+
+### Configuration
+
+Le fichier principal est `/etc/fail2ban/jail.conf`.  
+Il est recommandé de créer un fichier `/etc/fail2ban/jail.local` pour surcharger la configuration.  
+
+Exemple de configuration pour protéger **SSH** :
+
+```ini
+[sshd]
+enabled = true
+port    = ssh
+filter  = sshd
+logpath = /var/log/auth.log
+maxretry = 5
+bantime = 600
+```
+
+Puis redémarrez Fail2ban :
+
+```bash
+sudo systemctl enable --now fail2ban
+```
+
+Vérifier l’état :
+
+```bash
+sudo fail2ban-client status sshd
+```
+
+---
+
+## Méthode 2 : Installer CrowdSec (recommandé)
+
+CrowdSec est une solution plus récente qui combine **détection locale** et **base de menaces collaborative**.  
+Lorsqu’une IP est identifiée comme malveillante, elle est partagée dans la communauté et automatiquement bloquée par tous les serveurs participants.
+
+### Installation
+
+```bash
+# Debian / Ubuntu
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
+sudo apt install crowdsec -y
+
+# Rocky / AlmaLinux
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh | sudo bash
+sudo dnf install crowdsec -y
+```
+
+### Activation du pare-feu
+
+Installez le "bouncer" pour bloquer automatiquement les IP malveillantes :
+
+```bash
+# Pour iptables
+sudo apt install crowdsec-firewall-bouncer-iptables -y
+
+# Pour nftables
+sudo apt install crowdsec-firewall-bouncer-nftables -y
+```
+
+### Vérification
+
+```bash
+sudo systemctl status crowdsec
+sudo cscli decisions list
+```
+
+---
+
+## Quelle solution choisir ?
+
+- **Fail2ban** → adapté aux environnements simples, facile à configurer.  
+- **CrowdSec** → recommandé pour les serveurs en production, bénéficie d’une base collaborative d’attaques en temps réel.  
+
+---
+
+## Bonnes pratiques
+
+- Toujours maintenir vos paquets à jour  
+- Limiter l’accès SSH (changer de port ou utiliser uniquement les clés SSH)  
+- Mettre en place un pare-feu de base (**UFW**, **firewalld**)  
+- Surveiller régulièrement les journaux système  
+
+---
