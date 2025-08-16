@@ -1,44 +1,87 @@
 ---
 title: "Installer Pterodactyl sur votre VPS"
-description: "Guide complet pour installer Pterodactyl de deux manières : via un script automatisé ou en suivant la documentation officielle."
+description: "Deux méthodes : script non-officiel (rapide) ou installation manuelle officielle (production)."
 ---
 
 ## Présentation
 
 [Pterodactyl](https://pterodactyl.io) est un **panel de gestion de serveurs de jeux** open-source.  
-Il permet d’héberger et de gérer facilement vos serveurs Minecraft, Rust, ARK et bien d’autres, grâce à une interface web moderne et un système de conteneurs sécurisé.
+Il permet d’héberger et gérer facilement vos serveurs Minecraft, Rust, ARK et bien d’autres via une interface web moderne.
 
 Dans ce guide, vous trouverez **deux méthodes d’installation** :
 
-1. **Méthode simple** : utilisation du script non-officiel *(installation rapide et automatisée)*  
-2. **Méthode avancée** : suivre la [documentation officielle](https://pterodactyl.io/panel/1.0/getting_started.html) *(installation manuelle, plus flexible)*
-
-<Note>
-Nous recommandons la **méthode simple** pour une première installation ou des tests rapides, et la **méthode avancée** pour un usage en production.
-</Note>
+1. **Méthode simple** — utilisation d’un script non-officiel *(installation rapide et automatisée)*  
+2. **Méthode avancée** — installation manuelle en suivant la [documentation officielle](https://pterodactyl.io/panel/1.0/getting_started.html) *(plus complexe mais adaptée à la production)*
 
 ---
 
 ## Prérequis
 
 - Un VPS sous **Ubuntu 20.04+, Debian 10+, Rocky/AlmaLinux 8+**  
-  (voir tableau de compatibilité dans la doc HetixCloud)  
 - Accès SSH avec un utilisateur disposant des droits `sudo`  
-- Un nom de domaine (optionnel mais recommandé)  
-- Une machine avec au moins **2 Go RAM / 1 vCPU**
+- Un nom de domaine (recommandé pour SSL)  
+- Minimum **2 Go de RAM / 1 vCPU**
 
 ---
 
-## Méthode 1 : Script non-officiel (rapide et simple)
+## Méthode 1 — Script non-officiel (rapide)
 
-Cette méthode permet d’installer Pterodactyl **en quelques commandes**.
+Cette méthode est la plus simple et permet d’installer Pterodactyl en quelques minutes.  
+Elle est particulièrement adaptée pour des **tests rapides** ou une **première prise en main**.
 
 ```bash
 # Télécharger le script
 curl -s https://pterodactyl-installer.se -o installer.sh
 
-# Rendre le script exécutable
+# Rendre exécutable
 chmod +x installer.sh
 
-# Lancer le script en root
+# Lancer en root
 sudo bash installer.sh
+```
+
+À la fin du processus, le script vous indiquera l’URL du panel ainsi que vos identifiants administrateur.
+
+<Tip>
+Si vous obtenez une erreur `bash: /dev/fd/63: No such file or directory`,  
+il faut **d’abord télécharger** le script puis l’exécuter comme ci-dessus.
+</Tip>
+
+---
+
+## Méthode 2 — Documentation officielle (installation manuelle)
+
+Pour un environnement de **production** ou si vous souhaitez garder un **contrôle total** sur la configuration, il est recommandé de suivre la documentation officielle.  
+
+La documentation officielle détaille l’installation manuelle de chaque composant :  
+- PHP 8.3 et ses extensions  
+- MariaDB / MySQL  
+- Redis  
+- Nginx ou Apache  
+- Certificat SSL Let’s Encrypt  
+- Configuration du panel et de l’administrateur  
+
+👉 Guide complet : [Installation officielle de Pterodactyl](https://pterodactyl.io/panel/1.0/getting_started.html)
+
+<Note>
+Cette méthode est plus longue et demande des connaissances systèmes,  
+mais elle garantit une installation stable et maintenable à long terme.
+</Note>
+
+---
+
+## Choisir sa méthode
+
+- 🚀 **Débutant / Test rapide** → Script non-officiel  
+- 🛠️ **Production / Contrôle total** → Documentation officielle  
+
+---
+
+## Support
+
+En cas de problème :  
+- Consultez la documentation : [pterodactyl.io](https://pterodactyl.io)  
+- Vérifiez les logs avec `journalctl -u pteroq.service -f`  
+- Contactez notre support si vous utilisez HetixCloud.
+
+---
