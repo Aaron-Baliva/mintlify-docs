@@ -23,6 +23,7 @@
                         "group": "VPS",
                         "pages": [
                             "vps/distribution",
+                            "vps/keyssh",
                             "vps/pterodactyl"
                         ]
                     }
