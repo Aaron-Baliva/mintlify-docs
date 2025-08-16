@@ -1,0 +1,280 @@
+---
+title: "Déployer un site web avec Apache ou Nginx"
+description: "Procédure d’installation sur Debian/Ubuntu, exemples de vhosts, SSL, PHP-FPM, et différences clés entre Apache et Nginx."
+---
+
+## Objectif
+
+Installer un site web sur un VPS en choisissant **Apache** ou **Nginx**, avec prise en charge de **PHP-FPM**, **HTTP/2** et **Let’s Encrypt**.
+
+<Note>
+Ce guide cible Debian/Ubuntu (Debian 11/12, Ubuntu 20.04+). Les commandes pour Rocky/AlmaLinux sont indiquées lorsque pertinent.
+</Note>
+
+---
+
+## Prérequis
+
+- VPS à jour avec accès **SSH** et droits `sudo`  
+- Un **nom de domaine** pointant vers l’IP publique du VPS (`A` / `AAAA`)  
+- Pare-feu ouvert sur les ports **80** (HTTP) et **443** (HTTPS)  
+- (Optionnel) **PHP 8.3** si vous servez des pages dynamiques
+
+### Conventions
+
+- Domaine : ``<DOMAIN>`` (ex. `example.com`)  
+- Racine web : `/var/www/<DOMAIN>/public`  
+- Utilisateur système (propriétaire des fichiers) : ``<USER>`` (ex. `ubuntu`, `debian`)
+
+---
+
+## Choisir entre Apache et Nginx
+
+| Critère | Apache | Nginx |
+|---|---|---|
+| Philosophie | Serveur web modulaire, très flexible | Serveur/proxy orienté événements, très performant |
+| `.htaccess` | Oui (pratique en mutualisé) | Non (configuration centralisée, plus stricte) |
+| Fichiers statiques | Bon | Excellent |
+| PHP | `php-fpm` **ou** `mod_php` (déconseillé) | `php-fpm` (recommandé) |
+| Réécritures | Souvent via `.htaccess` | Dans les blocs `location` |
+| Reverse proxy / cache | Possible | Naturel (proxy, cache, LB) |
+
+**En résumé :**  
+- Héritage mutualisé / `.htaccess` → Apache est souvent plus simple.  
+- Performance, proxy, config centralisée → Nginx est un excellent choix.
+
+---
+
+## Étape 1 — Préparer le système
+
+```bash
+# Debian/Ubuntu
+sudo apt update && sudo apt -y upgrade
+sudo apt -y install ufw
+sudo ufw allow OpenSSH
+sudo ufw allow http
+sudo ufw allow https
+sudo ufw --force enable
+```
+
+```bash
+# Rocky/AlmaLinux
+sudo dnf -y update
+sudo dnf -y install firewalld
+sudo systemctl enable --now firewalld
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --reload
+```
+
+Créer l’arborescence du site :
+
+```bash
+sudo mkdir -p /var/www/<DOMAIN>/public
+sudo chown -R <USER>:<USER> /var/www/<DOMAIN>
+sudo chmod -R 750 /var/www/<DOMAIN>
+```
+
+Page de test :
+
+```bash
+cat << 'EOF' > /var/www/<DOMAIN>/public/index.html
+<!doctype html>
+<html><head><meta charset="utf-8"><title>OK</title></head>
+<body><h1>Déploiement opérationnel</h1></body></html>
+EOF
+```
+
+---
+
+## Option A — Installer et configurer **Nginx** (+ PHP-FPM)
+
+### Installation
+
+```bash
+# Debian/Ubuntu
+sudo apt -y install nginx
+
+# PHP-FPM (si PHP nécessaire)
+sudo apt -y install php8.3-fpm
+```
+
+### VHost Nginx
+
+Créer `/etc/nginx/sites-available/<DOMAIN>.conf` :
+
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name <DOMAIN> www.<DOMAIN>;
+
+    root /var/www/<DOMAIN>/public;
+    index index.php index.html;
+
+    # Pages statiques + front controller
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # PHP via php-fpm (socket)
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+    }
+
+    # Sécurité basique
+    location ~ /\.
+    {
+        deny all;
+    }
+
+    # Taille d'upload raisonnable (adaptez si besoin)
+    client_max_body_size 20m;
+}
+```
+
+Activer et tester :
+
+```bash
+sudo ln -s /etc/nginx/sites-available/<DOMAIN>.conf /etc/nginx/sites-enabled/<DOMAIN>.conf
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+### HTTPS avec Let’s Encrypt
+
+```bash
+sudo apt -y install certbot python3-certbot-nginx
+sudo certbot --nginx -d <DOMAIN> -d www.<DOMAIN> --redirect -m admin@<DOMAIN> --agree-tos -n
+```
+
+Journaux et statut :
+
+```bash
+sudo journalctl -u nginx -f
+sudo systemctl status php8.3-fpm
+```
+
+---
+
+## Option B — Installer et configurer **Apache** (+ PHP-FPM recommandé)
+
+### Installation
+
+```bash
+# Debian/Ubuntu
+sudo apt -y install apache2
+sudo a2enmod ssl http2 rewrite headers proxy_fcgi setenvif
+sudo apt -y install php8.3-fpm
+```
+
+> **Pourquoi PHP-FPM ?**  
+> Conservez le MPM `event` d’Apache pour de meilleures performances et servez PHP via `php-fpm`.  
+> Évitez `libapache2-mod-php` (force `mpm_prefork`).
+
+### VHost Apache (HTTP)
+
+Créer `/etc/apache2/sites-available/<DOMAIN>.conf` :
+
+```apache
+<VirtualHost *:80>
+    ServerName <DOMAIN>
+    ServerAlias www.<DOMAIN>
+    DocumentRoot /var/www/<DOMAIN>/public
+
+    <Directory /var/www/<DOMAIN>/public>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    # PHP via php-fpm (socket)
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/run/php/php8.3-fpm.sock|fcgi://localhost/"
+    </FilesMatch>
+
+    # Sécurité basique
+    <LocationMatch "^/\.">
+        Require all denied
+    </LocationMatch>
+
+    # En-têtes utiles
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=()"
+    Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' https:"
+
+    ErrorLog  ${APACHE_LOG_DIR}/<DOMAIN>-error.log
+    CustomLog ${APACHE_LOG_DIR}/<DOMAIN>-access.log combined
+</VirtualHost>
+```
+
+Activer et recharger :
+
+```bash
+sudo a2ensite <DOMAIN>.conf
+sudo a2dissite 000-default.conf
+sudo apache2ctl configtest
+sudo systemctl reload apache2
+```
+
+### HTTPS avec Let’s Encrypt
+
+```bash
+sudo apt -y install certbot python3-certbot-apache
+sudo certbot --apache -d <DOMAIN> -d www.<DOMAIN> --redirect -m admin@<DOMAIN> --agree-tos -n
+```
+
+(Optionnel) Activer HTTP/2 :
+
+```bash
+sudo a2enmod http2
+sudo systemctl reload apache2
+```
+
+Journaux et statut :
+
+```bash
+sudo journalctl -u apache2 -f
+sudo systemctl status php8.3-fpm
+```
+
+---
+
+## (Optionnel) Vérifier PHP
+
+Créer un fichier de test :
+
+```bash
+cat << 'EOF' > /var/www/<DOMAIN>/public/info.php
+<?php phpinfo();
+EOF
+```
+
+Ouvrir `https://<DOMAIN>/info.php`, puis **supprimer** ce fichier :
+
+```bash
+rm /var/www/<DOMAIN>/public/info.php
+```
+
+---
+
+## Bonnes pratiques
+
+- **Permissions** : propriétaire ``<USER>`` ; éviter les permissions larges (pas de `777`)  
+- **Logs** : surveiller erreurs et accès (`/var/log/nginx/`, `/var/log/apache2/`)  
+- **Mises à jour** : maintenir `nginx` / `apache2` / `php-fpm` à jour  
+- **Compression** : activer Gzip/Brotli (Nginx : `gzip on;` ; Apache : `mod_deflate`/Brotli)  
+- **Sécurité** : authentification SSH par clé ; limiter SFTP ; compléter avec **CrowdSec** ou **Fail2ban** si besoin
+
+---
+
+## Dépannage rapide
+
+- **404/500** : vérifier `root` / `DocumentRoot`, droits et journaux  
+- **PHP non exécuté** : vérifier le socket `php-fpm`, modules activés, rechargement des services  
+- **SSL** : `certbot renew --dry-run` pour tester le renouvellement automatique  
+- **Conflit de ports** : un seul service écoute sur `:80/:443` sauf reverse proxy délibéré
+
+---

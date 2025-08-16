@@ -25,6 +25,7 @@
                             "vps/distribution",
                             "vps/keyssh",
                             "vps/firewall",
+                            "vps/apache-nginx",
                             "vps/pterodactyl"
                         ]
                     }
